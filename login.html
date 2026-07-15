@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Admin GeniosBot | Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-card">
+      <a class="brand" href="/">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><path d="M13 15.5 22 10l9 5.5v12L22 33l-9-5.5z"/><circle cx="18" cy="21" r="2"/><circle cx="26" cy="21" r="2"/><path d="M18 26c2.3 1.8 5.7 1.8 8 0M22 10V6M19 6h6"/></svg>
+        </span>
+        <span><strong>GENIOS</strong>BOT</span>
+      </a>
+      <h1>Acceso administrador</h1>
+      <p>Gestiona órdenes, pagos y seguimiento de inscripciones.</p>
+
+      <form class="auth-form" id="login-form">
+        <label>
+          <span>Usuario</span>
+          <input type="text" id="admin-username" autocomplete="username" required />
+        </label>
+        <label>
+          <span>Contraseña</span>
+          <input type="password" id="admin-password" autocomplete="current-password" required />
+        </label>
+        <button class="button button--primary" id="login-submit" type="submit">Ingresar</button>
+        <p class="auth-message" id="login-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>

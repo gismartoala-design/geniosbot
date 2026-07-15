@@ -1,0 +1,16 @@
+services:
+  geniosbot:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    env_file:
+      - .env
+    volumes:
+      - geniosbot-data:/app/data
+    environment:
+      NODE_ENV: production
+      PORT: 8080
+
+volumes:
+  geniosbot-data:

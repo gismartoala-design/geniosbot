@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Admin GeniosBot | Órdenes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-page">
+  <header class="admin-header">
+    <div class="container admin-header__inner">
+      <a class="brand" href="/">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><path d="M13 15.5 22 10l9 5.5v12L22 33l-9-5.5z"/><circle cx="18" cy="21" r="2"/><circle cx="26" cy="21" r="2"/><path d="M18 26c2.3 1.8 5.7 1.8 8 0M22 10V6M19 6h6"/></svg>
+        </span>
+        <span><strong>GENIOS</strong>BOT</span>
+      </a>
+      <div class="admin-actions">
+        <button class="button button--ghost" id="refresh-orders" type="button">Actualizar</button>
+        <button class="button button--primary" id="logout" type="button">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="container">
+      <section class="admin-hero">
+        <div>
+          <span class="eyebrow eyebrow--dark"><span></span> Panel seguro</span>
+          <h1>Órdenes e inscripciones</h1>
+          <p>Revisa compras creadas, pagos pendientes y seguimiento de estudiantes.</p>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Orden</th>
+              <th>Cliente</th>
+              <th>Plan</th>
+              <th>Preferencias</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body">
+            <tr><td colspan="5">Cargando órdenes...</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
