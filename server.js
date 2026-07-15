@@ -11,7 +11,11 @@ loadEnvFile(path.join(ROOT, '.env'));
 const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, 'data');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const PORT = Number(process.env.PORT || 8080);
+const HOST = process.env.HOST || '0.0.0.0';
 const IS_PROD = process.env.NODE_ENV === 'production';
+const runtimeSessionSecret = process.env.SESSION_SECRET && process.env.SESSION_SECRET.length >= 32
+  ? process.env.SESSION_SECRET
+  : crypto.randomBytes(32).toString('base64url');
 
 const CONFIG = {
   baseUrl: (process.env.BASE_URL || `http://localhost:${PORT}`).replace(/\/$/, ''),
@@ -27,7 +31,7 @@ const CONFIG = {
   payphoneCardTypeField: process.env.PAYPHONE_CARD_TYPE_FIELD || 'cardType',
   payphoneCreditPlanField: process.env.PAYPHONE_CREDIT_PLAN_FIELD || 'creditPlan',
   payphoneInstallmentsField: process.env.PAYPHONE_INSTALLMENTS_FIELD || 'installments',
-  sessionSecret: process.env.SESSION_SECRET || '',
+  sessionSecret: runtimeSessionSecret,
   adminUsername: process.env.ADMIN_USERNAME || 'admin',
   adminPasswordHash: process.env.ADMIN_PASSWORD_HASH || ''
 };
@@ -107,11 +111,11 @@ if (!fs.existsSync(ORDERS_FILE)) {
 
 function requireProductionSecrets() {
   if (!IS_PROD) return;
-  const missing = [];
-  if (!CONFIG.sessionSecret || CONFIG.sessionSecret.length < 32) missing.push('SESSION_SECRET');
-  if (!CONFIG.adminPasswordHash) missing.push('ADMIN_PASSWORD_HASH');
-  if (missing.length) {
-    throw new Error(`Faltan variables seguras para producción: ${missing.join(', ')}`);
+  if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) {
+    console.warn('SESSION_SECRET no está configurado. Se usará un secreto efímero; las sesiones se cerrarán al reiniciar.');
+  }
+  if (!CONFIG.adminPasswordHash) {
+    console.warn('ADMIN_PASSWORD_HASH no está configurado. El panel administrador queda deshabilitado hasta configurarlo.');
   }
 }
 
@@ -146,8 +150,7 @@ function parseCookies(req) {
 }
 
 function sign(value) {
-  const secret = CONFIG.sessionSecret || 'dev-only-change-me-before-production';
-  return crypto.createHmac('sha256', secret).update(value).digest('base64url');
+  return crypto.createHmac('sha256', CONFIG.sessionSecret).update(value).digest('base64url');
 }
 
 function createSessionCookie(username) {
@@ -413,6 +416,11 @@ function tooManyLoginAttempts(req) {
 
 async function handleAdminLogin(req, res) {
   try {
+    if (IS_PROD && !CONFIG.adminPasswordHash) {
+      send(res, 503, { ok: false, message: 'Admin no configurado. Define ADMIN_PASSWORD_HASH en variables de entorno.' });
+      return;
+    }
+
     if (tooManyLoginAttempts(req)) {
       send(res, 429, { ok: false, message: 'Demasiados intentos. Intenta más tarde.' });
       return;
@@ -513,6 +521,11 @@ function serveFile(req, res, pathname) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, CONFIG.baseUrl);
 
+  if (req.method === 'GET' && url.pathname === '/healthz') {
+    send(res, 200, { ok: true, service: 'geniosbot' });
+    return;
+  }
+
   if (req.method === 'POST' && url.pathname === '/api/checkout') {
     await handleCheckout(req, res);
     return;
@@ -547,6 +560,6 @@ const server = http.createServer(async (req, res) => {
   serveFile(req, res, url.pathname);
 });
 
-server.listen(PORT, () => {
-  console.log(`GeniosBot listo en http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`GeniosBot listo en http://${HOST}:${PORT}`);
 });

@@ -73,6 +73,24 @@ docker compose up -d --build
 
 El volumen `geniosbot-data` conserva las órdenes creadas.
 
+## Cloud Run
+
+El contenedor escucha en `0.0.0.0` y usa la variable `PORT` que entrega Cloud Run. También expone:
+
+```text
+/healthz
+```
+
+Si no configuras `ADMIN_PASSWORD_HASH`, la web pública arranca igual, pero el panel `/admin` queda deshabilitado por seguridad. Para activar admin en Cloud Run, define como variables de entorno:
+
+```env
+SESSION_SECRET=un-secreto-real-de-minimo-32-caracteres
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD_HASH=hash-generado-con-npm-run-hash-password
+BASE_URL=https://tu-url-de-cloud-run-o-dominio.com
+PAYPHONE_TOKEN=token-real-de-payphone
+```
+
 ## Panel admin
 
 Entra a:
