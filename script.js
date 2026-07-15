@@ -66,6 +66,21 @@ const activeObserver = new IntersectionObserver(entries => {
 }, { rootMargin: '-35% 0px -55% 0px' });
 sections.forEach(section => activeObserver.observe(section));
 
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('.program-card, .price-card').forEach(card => {
+    card.addEventListener('pointermove', event => {
+      const rect = card.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width - 0.5) * 6;
+      const y = ((event.clientY - rect.top) / rect.height - 0.5) * -6;
+      card.style.transform = `translateY(-6px) rotateX(${y}deg) rotateY(${x}deg)`;
+    });
+
+    card.addEventListener('pointerleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
 const whatsappForm = document.getElementById('whatsapp-form');
 whatsappForm?.addEventListener('submit', event => {
   event.preventDefault();
@@ -78,10 +93,11 @@ whatsappForm?.addEventListener('submit', event => {
 const selectedPlan = {
   id: 'trimestre_3',
   name: 'Formación trimestral',
-  price: '$240',
+  price: '$255',
   type: '3 meses de estudio',
   months: '3 meses',
-  saving: '$15'
+  saving: '$15',
+  progress: '48'
 };
 
 const selectedPlanName = document.getElementById('selected-plan');
@@ -90,6 +106,8 @@ const selectedPlanType = document.getElementById('selected-type');
 const selectedMonths = document.getElementById('selected-months');
 const selectedTotal = document.getElementById('selected-total');
 const selectedSaving = document.getElementById('selected-saving');
+const selectedProgressLabel = document.getElementById('selected-progress-label');
+const selectedProgressBar = document.getElementById('selected-progress-bar');
 const checkoutForm = document.getElementById('checkout-form');
 const checkoutSubmit = document.getElementById('checkout-submit');
 const checkoutMessage = document.getElementById('checkout-message');
@@ -129,6 +147,7 @@ const updateSelectedPlan = planCard => {
   selectedPlan.type = planCard.dataset.type;
   selectedPlan.months = planCard.dataset.months;
   selectedPlan.saving = planCard.dataset.saving;
+  selectedPlan.progress = planCard.dataset.progress;
 
   selectedPlanName.textContent = selectedPlan.name;
   selectedPlanPrice.textContent = selectedPlan.price;
@@ -136,6 +155,8 @@ const updateSelectedPlan = planCard => {
   selectedMonths.textContent = selectedPlan.months;
   selectedTotal.textContent = selectedPlan.price;
   selectedSaving.textContent = selectedPlan.saving;
+  selectedProgressLabel.textContent = `${selectedPlan.progress}%`;
+  selectedProgressBar.style.width = `${selectedPlan.progress}%`;
 
   if (['semestre_6', 'anual_12'].includes(selectedPlan.id)) {
     document.querySelector('input[name="cardType"][value="credit"]').checked = true;

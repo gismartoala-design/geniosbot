@@ -5,6 +5,7 @@ Sitio de cursos GeniosBot con checkout PayPhone, panel administrador protegido y
 ## Qué incluye
 
 - Web pública con paquetes de estudio: 1, 2, 3, 6 y 12 meses.
+- Mensualidad base: $90.
 - Checkout que crea órdenes en el backend.
 - Integración PayPhone desde servidor para no exponer el token en el navegador.
 - Pago con tarjeta de débito, crédito corriente o crédito diferido.

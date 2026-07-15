@@ -42,7 +42,7 @@ const PLANS = {
     name: 'Formación mensual',
     type: '1 mes de estudio',
     months: 1,
-    amountCents: 8500,
+    amountCents: 9000,
     savingsCents: 0
   },
   bimestre_2: {
@@ -50,7 +50,7 @@ const PLANS = {
     name: 'Formación 2 meses',
     type: '2 meses de estudio',
     months: 2,
-    amountCents: 16500,
+    amountCents: 17500,
     savingsCents: 500
   },
   trimestre_3: {
@@ -58,7 +58,7 @@ const PLANS = {
     name: 'Formación trimestral',
     type: '3 meses de estudio',
     months: 3,
-    amountCents: 24000,
+    amountCents: 25500,
     savingsCents: 1500
   },
   semestre_6: {
@@ -66,7 +66,7 @@ const PLANS = {
     name: 'Formación semestral',
     type: '6 meses de estudio',
     months: 6,
-    amountCents: 45500,
+    amountCents: 48500,
     savingsCents: 5500
   },
   anual_12: {
@@ -74,7 +74,7 @@ const PLANS = {
     name: 'Formación anual',
     type: '12 meses de estudio',
     months: 12,
-    amountCents: 86000,
+    amountCents: 92000,
     savingsCents: 16000
   }
 };
